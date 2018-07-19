@@ -1,5 +1,8 @@
 #!/bin/bash
 
+TARGETPRICE=$1
+echo $TARGETPRICE
+
 CLEOSDIR="$HOME/eos/build/programs/cleos"
 CLEOSDIRBAK="/usr/local/eosio/bin"
 
@@ -18,15 +21,25 @@ if [ -d $CLEOSDIR ]; then
 else
   if [ -d  $CLEOSDIRBAK ]; then
     if [ -e $CLEOSDIRBAK/cleos ]; then
-      RAMJSON=sudo $CLEOSDIRBAK/cleos -u http://api.eosnewyork.io get table eosio eosio rammarket
+      RAMJSON="$(sudo $CLEOSDIRBAK/cleos -u http://api.eosnewyork.io get table eosio eosio rammarket)"
     fi
   fi
 fi 
+# echo "RAM JSON:"
+# echo "${RAMJSON}"
 
+MOREROWS="$(echo "$RAMJSON" | jq -r '.more')"
 
-echo "DONE"
-echo "${RAMJSON}"
+if ! $MOREROWS ; then
+  RAMROWS="$(echo "$RAMJSON" | jq -r '.rows[0]')"
+  # echo "${RAMROWS}"
+  RAMBASE="$(echo "$RAMROWS" | jq -r '.base.balance')"
+  RAMQUOTE="$(echo "$RAMROWS" | jq -r '.quote.balance')"
 
-RAMROWS="$RAMJSON" | jq -r '.rows' 
-echo "${RAMROWS}"
-echo "$RAMROWS" | jq -r '.[0]'
+  QUOTEVAL="$(echo $RAMQUOTE | sed 's/ EOS//')"
+  BASEVAL="$(echo $RAMBASE | sed 's/ RAM//')"
+
+  calc() { awk "BEGIN{print $*}"; }
+  RAMPRICE=$(calc $QUOTEVAL*1024/$BASEVAL)
+  echo "Current EOSRAM Price: $RAMPRICE EOS/KByte"
+fi

@@ -24,6 +24,7 @@ alias agu='sudo apt-get update'
 # EOS command
 alias eos='cd ~/eos'
 alias eosny='cleos -u http://api.eosnewyork.io'
+alias eosram='cleos -u http://api.eosnewyork.io get table eosio eosio rammarket'
 
 # File management
 # Remove directory, use with caution

@@ -10,6 +10,13 @@ alias download='cd ~/Downloads'
 alias document='cd ~/Documents'
 alias music='cd ~/Music'
 
+# git shortcut
+alias gadd='git add'
+alias gaddall='git add -A'
+alias gcommit='git commit -am'
+alias gpull='git pull'
+alias gpush='git push'
+
 # Commands
 alias restart='sudo shutdown -r now'
 alias s='sudo'

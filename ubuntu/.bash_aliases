@@ -25,6 +25,7 @@ alias agu='sudo apt-get update'
 alias eos='cd ~/eos'
 alias eosny='cleos -u http://api.eosnewyork.io'
 alias eosram='cleos -u http://api.eosnewyork.io get table eosio eosio rammarket'
+alias eosconfig='cd ~/.local/share/eosio/nodeos/config'
 
 # File management
 # Remove directory, use with caution
